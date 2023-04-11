@@ -14,6 +14,7 @@ import java.util.List;
 @Component
 public class DataLoader implements ApplicationRunner
 {
+
     private final FestivalRepository mFestivalRepository;
     @Autowired
     public DataLoader(FestivalRepository pFestivalRepository)

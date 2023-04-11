@@ -8,7 +8,7 @@ public class FestivalController {
 
     @RequestMapping("/")
     public String accueil() {
-        return "Acceuil";
+        return "Accueil";
     }
 
     @RequestMapping("/AjouterFestival")

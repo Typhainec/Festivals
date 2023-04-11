@@ -2,9 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
     <title>Ajouter un festival</title>
 </head>
 <body>
+<div class="form">
+    <h1>Créer un nouveau festival</h1>
+<form th:action="@{/ajouterfestival}" th:object="${festival}" method="post">
 
+    <label>Nom :</label> <input type="text" th:field="*{nom}"/>
+    <br/>
+    <label>Ville :</label> <input type="text" th:field="*{ville}"/>
+    <br/>
+    <label>Lieu :</label> <input type="text" th:field="*{lieu}"/>
+    <br/>
+    <label>Date de début :</label> <input type="date" th:field="*{debut}"/>
+    <br/>
+    <label>Date de fin :</label> <input type="date" th:field="*{fin}"/>
+    <br/>
+    <label>Lattitude :</label> <input type="number" th:field="*{latitude}"/>
+    <br/>
+    <label>Longitude :</label> <input type="number" th:field="*{longitude}"/>
+    <br/>
+    <input type="submit" value="Enregistrer"/>
+</form>
+</div>
 </body>
 </html>

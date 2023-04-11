@@ -7,25 +7,23 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 
 @Repository
+
 public class FestivalDAOimpl implements FestivalDAO {
 
     @Autowired
     private fr.simplon.festivals.dao.impl.FestivalRepository festivalRepository;
 
     @Override
-    public void saveFestival(String nom, String ville, String lieu,  Date datedebut, Date datefin) {
+    public void saveFestival(String nom, String ville, String lieu,  Date debut, Date fin, Double latitude, Double longitude) {
         Festival festival = new Festival();
         festival.setNom(nom);
-        festival.setville(ville);
-        festival.setlieu(lieu);
-        festival.setdatedebut(datedebut);
-        festival.setdatefin(datefin);
+        festival.setVille(ville);
+        festival.setLieu(lieu);
+        festival.setDebut(debut);
+        festival.setFin(fin);
+        festival.setLatitude(latitude);
+        festival.setLongitude(longitude);
         festivalRepository.save(festival);
-    }
-
-    @Override
-    public void savefestival(String nom, String ville, String lieu, Date datedebut, Date datefin) {
-
     }
 }
 
