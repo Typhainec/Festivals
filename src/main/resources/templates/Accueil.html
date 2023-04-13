@@ -1,10 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>Page d'accueil</title>
+    <title>Accueil</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+
 </head>
 <body>
-<h1>Coucou</h1>
+
+<div class="titreaccueil">
+<h1>Créer un nouveau festival</h1>
+<button id="get-location-btn">Obtenir ma position</button>
+</div>
+
+
+<div id="mapid"></div>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+    // Le repère à placer sur la map à l'endroit de notre géolocalisation
+    let marker;
+
+    // Bouton de géolocalisation (obligatoire sinon ça veut dire qu'on essaye
+    // de contourner la gestion des autorisations de l'utilisateur).
+    let button = document.getElementById('get-location-btn');
+
+    // La map Leaflet
+    let mymap = L.map('mapid').setView([48.858093, 2.294694], 13);
+
+    // Un popup qui s'affichera au-dessus du marqueur
+    let popup = L.popup().setContent("D'après votre navigateur,<br> vous êtes ici");
+
+    // Ajout d'un layer sur la map pour afficher des tuiles avec les routes
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        tileSize: 512,
+        zoomOffset: -1,
+        maxZoom: 18
+    }).addTo(mymap);
+
+    // Ajoute un listener sur le bouton pour déclencher la géolocalisation via un clic
+    button.addEventListener('click', function() {
+        if(navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(onLocationFound, onLocationError);
+        } else {
+            alert("La géolocalisation n'est pas supportée par votre navigateur");
+        }
+    });
+
+    // Fonction de géolocalisation réussie
+    function onLocationFound(position) {
+
+        // On crée un tableau contenant latitude et longitude
+        const coords = [position.coords.latitude, position.coords.longitude];
+
+        // Si une marque a déjà été placée sur la map, on la supprime
+        if(marker) {
+            mymap.removeLayer(marker);
+        }
+        // On ajoute une marque à l'endroit de notre géolocalisation
+        marker = L.marker(coords).addTo(mymap);
+
+        marker.bindPopup(popup);
+        marker.addEventListener('click', (event) => {
+            popup.openOn(mymap);
+        });
+
+        // On déplace la map à l'endroit qu'on vient de marquer
+        mymap.setView(coords, 13);
+
+        // On met à jour le champ "position"
+        document.getElementById('position').textContent = `Lat: ${coords[0]}° / Lon: ${coords[1]}°`;
+    }
+
+    // Fonction de gestion d'erreur de géolocalisation
+    function onLocationError(e) {
+        alert(e.message);
+    }
+
+</script>
+
+<div class="bas">
+<button id="Ajouter"><a href="/AjouterFestival">Ajouter un Festival</a></button>
+</div>
+
+<div class="listefestivals">
+    <h1>Liste des Festivals</h1>
+    <table>
+        <tr>
+            <th>Nom</th>
+            <th>Ville</th>
+            <th>Lieu</th>
+            <th>Début</th>
+            <th>Fin</th>
+            <th>Éditer</th>
+        </tr>
+        <tr th:each="festival : ${festivals}">
+            <td th:text="${festival.nom}"></td>
+            <td th:text="${festival.ville}"></td>
+            <td th:text="${festival.lieu}"></td>
+            <td th:text="${#dates.format(festival.debut, 'dd/MM/yyyy')}"></td>
+            <td th:text="${#dates.format(festival.fin, 'dd/MM/yyyy')}"></td>
+            <button><a href="/EditerFestival">Éditer</a></button>
+        </tr>
+    </table>
+</div>
 </body>
 </html>
