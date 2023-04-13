@@ -5,6 +5,7 @@ import fr.simplon.festivals.entity.Festival;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import java.util.Date;
+import java.util.List;
 
 @Repository
 
@@ -25,5 +26,16 @@ public class FestivalDAOimpl implements FestivalDAO {
         festival.setLongitude(longitude);
         festivalRepository.save(festival);
     }
+
+    @Override
+    public List<Festival> getAllFestivals(){
+        return festivalRepository.findAll();
+    }
+
+    @Override
+    public Festival getFestivalById(Long id) {
+        return festivalRepository.findById(id).orElse(null);
+    }
+
 }
 

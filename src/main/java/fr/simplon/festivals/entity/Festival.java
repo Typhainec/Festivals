@@ -3,6 +3,8 @@ package fr.simplon.festivals.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 
@@ -13,12 +15,15 @@ import java.util.Date;
 public class Festival {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd") // Sinon problème formulaire Thymeleaf th:field avec les <input type="date">
     private Date debut;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd") // Sinon problème formulaire Thymeleaf th:field avec les <input type="date">
     private Date fin;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
