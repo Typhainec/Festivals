@@ -78,39 +78,22 @@
         alert(e.message);
     }
 
-    // Parcourir les données des festivals
-    for (let i = 0; i < festivalsData.length; i++) {
-        const festival = festivalsData[i];
+    // Pour ajouter les marqueurs depuis la base de données
+    fetch('/festivals')
+        .then(response => response.json())
+        .then(festivals => {
+            festivals.forEach(festival => {
+                addMarkerOnMap(festival.latitude, festival.longitude, festival.nom, festival.ville);
+            });
+        });
 
-        // Récupérer les informations nécessaires pour le marqueur (latitude, longitude, nom, etc.)
-        const lat = festival.latitude;
-        const lon = festival.longitude;
-        const nom = festival.nom;
-        // Ajouter un marqueur pour chaque festival sur la carte
-        L.marker([lat, lon]).addTo(mymap)
-            .bindPopup(nom) // Ajouter un popup avec le nom du festival
-            .openPopup(); // Ouvrir le popup automatiquement
-    }
-
-    // Exemple de code pour récupérer des données de festival à partir d'un serveur via une API REST
-
-    // Fonction pour effectuer une requête HTTP GET pour récupérer les données de festival
-    function getFestivals() {
-        // Utiliser une bibliothèque de requête HTTP, comme Fetch ou Axios, pour effectuer la requête
-        fetch('/api/festivals') // Remplacer l'URL avec l'URL de l'API de votre serveur
-            .then(response => response.json())
-            .then(data => {
-                // Traitement des données récupérées
-                // Les données de festival sont disponibles dans la variable 'data'
-                console.log(data); // Afficher les données dans la console
-                // Utiliser les données pour afficher les marqueurs sur la carte ou effectuer d'autres opérations
-            })
-            .catch(error => console.error('Erreur lors de la récupération des données de festival :', error));
-    }
-
-    // Appeler la fonction pour récupérer les données de festival au chargement de la page
-    getFestivals();
-
+    fetch('/festivals')
+        .then(response => response.json())
+        .then(festivals => {
+            festivals.forEach(festival => {
+                addMarkerOnMap(festival.lat, festival.lon, festival.nom, festival.ville);
+            });
+        });
 
 </script>
 
